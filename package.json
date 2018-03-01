@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/steveninouye/HTTP-Socket-Server#readme",
   "dependencies": {
+    "fs": "0.0.1-security",
     "net": "^1.0.2"
   }
 }
