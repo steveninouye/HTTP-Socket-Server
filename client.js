@@ -13,7 +13,12 @@ const server = net.createConnection(8080, socket => {
   );
 
   server.on('data', data => {
-    console.log(data.toString());
+    console.log(data);
+    let dataArray = data.toString().split('\n\n');
+    dataArray.splice(0, 2);
+    let doc = dataArray.join('');
+    console.log(doc);
+    server.end();
   });
 
   process.stdin.on('readable', () => {

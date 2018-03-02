@@ -1,9 +1,6 @@
 const net = require('net');
 const fs = require('fs');
 process.stdin.setEncoding('utf8');
-let HTTPVersion = 'HTTP/1.1';
-let HTTPStatusCode = '200';
-let ReasonPhrase = 'OK';
 let uri = './assets/helium.html';
 
 let pages = {};
@@ -22,9 +19,16 @@ fs.readFile('./assets/404.html', 'utf8', function(err, data) {
 fs.readFile('./assets/styles.css', 'utf8', function(err, data) {
   pages.css = data;
 });
+fs.readFile('./assets/super.png', 'utf8', function(err, data) {
+  pages.icon = data;
+});
 
 var server = net.createServer(socket => {
   socket.setEncoding('utf8');
+  let HTTPVersion = 'HTTP/1.1';
+  let HTTPStatusCode = '200';
+  let ReasonPhrase = 'OK';
+  let date = new Date().toUTCString();
 
   socket.on('data', data => {
     console.log(data.toString());
@@ -34,18 +38,23 @@ var server = net.createServer(socket => {
     let uri = headerRequestLine[1];
 
     let string = '';
-    if (uri === '/favicon.ico' || uri === '/') {
+    if (uri === '/') {
       string = pages.index;
     } else if (uri === '/css/styles.css') {
       string = pages.css;
+    } else if (uri === '/favicon.ico') {
+      string = pages.icon;
     } else {
       let page = uri.replace('.html', '');
       page = page.substring(1);
       console.log('page', page);
       string = pages[page] ? pages[page] : pages.error;
     }
-    console.log(string);
-    socket.write(`${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\n
+    if (string === pages.error) {
+      HTTPStatusCode = '404';
+      ReasonPhrase = 'Not Found';
+    }
+    socket.write(`${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\nServer: Superman Steve Server\nDate: ${date}\n
     \n
     ${string}`);
     socket.end();
