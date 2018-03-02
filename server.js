@@ -57,7 +57,10 @@ var server = net.createServer(socket => {
     socket.write(`${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\nServer: Superman Steve Server\nDate: ${date}\n
     \n
     ${string}`);
-    socket.end();
+    socket.end('goodbye');
+  });
+  socket.on('end', () => {
+    console.log('request made');
   });
 });
 
