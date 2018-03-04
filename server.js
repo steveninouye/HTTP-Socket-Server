@@ -1,3 +1,4 @@
+'use strict';
 const net = require('net');
 const fs = require('fs');
 let uri = './assets/helium.html';
