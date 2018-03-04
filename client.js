@@ -23,7 +23,7 @@ if (HTTPMethods.indexOf(inputMethod) === -1 && indexOfMethod) {
 const indexOfPort =
   arg.indexOf('--port') !== -1 ? arg.indexOf('--port') + 1 : undefined;
 const inputPort = arg[indexOfPort] ? Number(arg[indexOfPort]) : undefined;
-if (!inputPort) {
+if (indexOfPort && !inputPort) {
   throw new Error('Port input is not valid');
 }
 
