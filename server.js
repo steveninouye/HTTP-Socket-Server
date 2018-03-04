@@ -1,7 +1,7 @@
 const net = require('net');
 const fs = require('fs');
-process.stdin.setEncoding('utf8');
 let uri = './assets/helium.html';
+const port = 8080;
 
 let pages = {};
 fs.readFile('./assets/helium.html', 'utf8', function(err, data) {
@@ -54,16 +54,22 @@ var server = net.createServer(socket => {
       HTTPStatusCode = '404';
       ReasonPhrase = 'Not Found';
     }
-    socket.write(`${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\nServer: Superman Steve Server\nDate: ${date}\n
-    \n
-    ${string}`);
-    socket.end('goodbye');
+    if (requestMethod === 'HEAD') {
+      socket.write(
+        `${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\nServer: Superman Steve Server\nDate: ${date}`
+      );
+    } else {
+      socket.write(`${HTTPVersion} ${HTTPStatusCode} ${ReasonPhrase}\nServer: Superman Steve Server\nDate: ${date}\n
+      \n
+      ${string}`);
+    }
+    socket.end('\nConnection Closed\n');
   });
   socket.on('end', () => {
     console.log('request made');
   });
 });
 
-server.listen(8080, () => {
-  console.log(`Server up on Port 8080`);
+server.listen(port, () => {
+  console.log(`Server up on Port ${port}`);
 });
