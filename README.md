@@ -137,12 +137,16 @@ Parse the response headers, and store them in a hash table for later use.
 
 ### Testing
 
-Test by requesting web servers with domain names, and your own running `server.js`
+Test by requesting web servers with domain names, and your own running `server.js`. You should be able to acquire headers
+
+
 
 ```
 node client.js www.devleague.com
 node client.js localhost
 ```
+
+*Note*: You will not be able to acquire the response body of sites using the https protocol as you will be trying to connect over a secured port without a proper SSL handshake
 
 ### Features
 
